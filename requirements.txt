@@ -1,0 +1,12 @@
+# Core app framework
+streamlit>=1.28
+
+# Data processing
+pandas>=2.0
+
+# Visualization
+altair>=5.5
+plotly>=5.18
+
+# Images (logo)
+pillow>=10.0
