@@ -14,4 +14,4 @@ pillow>=10.0
 # Database
 neon-api>=0.3
 sqlalchemy
-pyscopg2
+psycopg2
