@@ -27,7 +27,6 @@ def load_data(csv_path: str | None = None, use_db: bool = True) -> pd.DataFrame:
     except Exception as e:
         print(f"Error loading from DB: {e}")
     
-    print(df.info())
     df["year"] = pd.to_numeric(df["year"], errors="coerce")
     df = df.dropna(subset=["year"]).copy()
     df["year"] = df["year"].astype(int)
