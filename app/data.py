@@ -18,14 +18,12 @@ def load_data(csv_path: str | None = None, use_db: bool = True) -> pd.DataFrame:
     df["Year"] = df["Year"].astype(int)
     return df
     """
-    try:
-        conn_string = "postgresql://neondb_owner:npg_SBXuCaUgE50l@ep-little-truth-abzgs476-pooler.eu-west-2.aws.neon.tech/gs?sslmode=require&channel_binding=require"
-        sqlalchemy_conn = f"postgresql+psycopg://{conn_string.split('://', 1)[1]}"
-        engine = create_engine(sqlalchemy_conn)
-        df = pd.read_sql_query("SELECT * FROM outbreaks", engine)
+
+    conn_string = "postgresql://neondb_owner:npg_SBXuCaUgE50l@ep-little-truth-abzgs476-pooler.eu-west-2.aws.neon.tech/gs?sslmode=require&channel_binding=require"
+    sqlalchemy_conn = f"postgresql+psycopg://{conn_string.split('://', 1)[1]}"
+    engine = create_engine(sqlalchemy_conn)
+    df = pd.read_sql_query("SELECT * FROM outbreaks", engine)
     
-    except Exception as e:
-        print(f"Error loading from DB: {e}")
     
     df["year"] = pd.to_numeric(df["year"], errors="coerce")
     df = df.dropna(subset=["year"]).copy()
