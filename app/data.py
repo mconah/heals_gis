@@ -31,7 +31,6 @@ def load_data(csv_path: str | None = None, use_db: bool = True) -> pd.DataFrame:
     df["year"] = pd.to_numeric(df["year"], errors="coerce")
     df = df.dropna(subset=["year"]).copy()
     df["year"] = df["year"].astype(int)
-    print(df.head())
     return df 
 
 def years_sorted(df: pd.DataFrame) -> list[int]:
