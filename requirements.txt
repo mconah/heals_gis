@@ -10,3 +10,6 @@ plotly>=5.18
 
 # Images (logo)
 pillow>=10.0
+
+# Database
+neon-api>=0.3

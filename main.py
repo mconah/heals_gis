@@ -32,13 +32,13 @@ def main() -> None:
 
         df_pool = filter_df(df, years_selected, selected_category)
         disease_options = (
-            df_pool["Disease"].value_counts().sort_values(ascending=False).index.tolist()
+            df_pool["disease"].value_counts().sort_values(ascending=False).index.tolist()
         )
-        selected_diseases = st.multiselect("Diseases", disease_options, default=[])
+        selected_diseases = st.multiselect("diseases", disease_options, default=[])
 
     with main_col:
         years_label = (
-            "All years" if len(years_selected) == len(sorted(df["Year"].unique(), reverse=True)) else ", ".join(map(str, years_selected))
+            "All years" if len(years_selected) == len(sorted(df["year"].unique(), reverse=True)) else ", ".join(map(str, years_selected))
         )
         st.subheader(f"{page} — Years: {years_label}")
 

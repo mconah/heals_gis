@@ -11,7 +11,7 @@ def choropleth(df_view: pd.DataFrame, color_scale: str) -> None:
         st.info("No records match the current filters.")
         return
     geo = (
-        df_view.groupby(["iso3", "Country"], dropna=True)
+        df_view.groupby(["iso3", "country"], dropna=True)
         .size()
         .reset_index(name="Outbreaks")
     )
@@ -19,7 +19,7 @@ def choropleth(df_view: pd.DataFrame, color_scale: str) -> None:
         geo,
         locations="iso3",
         color="Outbreaks",
-        hover_name="Country",
+        hover_name="country",
         color_continuous_scale=color_scale,
         projection="natural earth",
         title=None,
@@ -37,23 +37,23 @@ def insights(df_view: pd.DataFrame, alt_base_color: str) -> None:
     r1c1, r1c2, r1c3 = st.columns([1.2, 1.6, 1.2])
     with r1c1:
         st.caption("Top 3 diseases")
-        top3 = df_view["Disease"].value_counts().nlargest(3).reset_index()
-        top3.columns = ["Disease", "Outbreaks"]
+        top3 = df_view["disease"].value_counts().nlargest(3).reset_index()
+        top3.columns = ["disease", "Outbreaks"]
         st.altair_chart(
             alt.Chart(top3)
             .mark_bar(color=alt_base_color)
-            .encode(x="Outbreaks:Q", y=alt.Y("Disease:N", sort="-x"), tooltip=["Disease:N", "Outbreaks:Q"])
+            .encode(x="Outbreaks:Q", y=alt.Y("disease:N", sort="-x"), tooltip=["disease:N", "Outbreaks:Q"])
             .properties(height=220),
             use_container_width=True,
         )
 
     with r1c2:
         st.caption("Outbreaks by year")
-        ts = df_view.groupby("Year").size().reset_index(name="Outbreaks").sort_values("Year")
+        ts = df_view.groupby("year").size().reset_index(name="Outbreaks").sort_values("year")
         st.altair_chart(
             alt.Chart(ts)
             .mark_line(point=True, color=alt_base_color)
-            .encode(x="Year:O", y="Outbreaks:Q", tooltip=["Year:O", "Outbreaks:Q"])  # keep ordinal for gaps
+            .encode(x="year:O", y="Outbreaks:Q", tooltip=["year:O", "Outbreaks:Q"])  # keep ordinal for gaps
             .properties(height=220),
             use_container_width=True,
         )
@@ -61,12 +61,12 @@ def insights(df_view: pd.DataFrame, alt_base_color: str) -> None:
     with r1c3:
         st.caption("Top 20 diseases (dot plot)")
         top_disease = (
-            df_view.groupby("Disease").size().reset_index(name="count").sort_values("count", ascending=False).head(20)
+            df_view.groupby("disease").size().reset_index(name="count").sort_values("count", ascending=False).head(20)
         )
         st.altair_chart(
             alt.Chart(top_disease)
             .mark_point(filled=True, size=90, color=alt_base_color)
-            .encode(x="count:Q", y=alt.Y("Disease:N", sort="-x"), tooltip=["Disease:N", "count:Q"])
+            .encode(x="count:Q", y=alt.Y("disease:N", sort="-x"), tooltip=["disease:N", "count:Q"])
             .properties(height=220),
             use_container_width=True,
         )
@@ -75,23 +75,23 @@ def insights(df_view: pd.DataFrame, alt_base_color: str) -> None:
     r2c1, r2c2 = st.columns(2)
     with r2c1:
         st.caption("All diseases (histogram)")
-        all_disease = df_view.groupby("Disease").size().reset_index(name="count")
+        all_disease = df_view.groupby("disease").size().reset_index(name="count")
         st.altair_chart(
             alt.Chart(all_disease)
             .mark_bar(color=alt_base_color)
-            .encode(x=alt.X("Disease:N", sort="-y"), y="count:Q", tooltip=["Disease:N", "count:Q"])
+            .encode(x=alt.X("disease:N", sort="-y"), y="count:Q", tooltip=["disease:N", "count:Q"])
             .properties(height=360),
             use_container_width=True,
         )
     with r2c2:
         st.caption("Top countries")
         by_country = (
-            df_view.groupby(["Country", "iso3"]).size().reset_index(name="Outbreaks").sort_values("Outbreaks", ascending=False).head(15)
+            df_view.groupby(["country", "iso3"]).size().reset_index(name="Outbreaks").sort_values("Outbreaks", ascending=False).head(15)
         )
         st.altair_chart(
             alt.Chart(by_country)
             .mark_bar(color=alt_base_color)
-            .encode(x="Outbreaks:Q", y=alt.Y("Country:N", sort="-x"), tooltip=["Country:N", "Outbreaks:Q"])  
+            .encode(x="Outbreaks:Q", y=alt.Y("country:N", sort="-x"), tooltip=["country:N", "Outbreaks:Q"])
             .properties(height=360),
             use_container_width=True,
         )
@@ -99,7 +99,7 @@ def insights(df_view: pd.DataFrame, alt_base_color: str) -> None:
     # Row 3
     st.markdown("#### Outbreaks (filtered)")
     cols = [c for c in [
-        "Year", "Country", "iso3", "Disease", "icd10n", "who_region", "unsd_region", "unsd_subregion", "DONs"
+        "year", "country", "iso3", "disease", "icd10n", "who_region", "unsd_region", "unsd_subregion", "DONs"
     ] if c in df_view.columns]
-    table_df = df_view[cols].sort_values(["Year", "Country", "Disease"]).reset_index(drop=True)
+    table_df = df_view[cols].sort_values(["year", "country", "disease"]).reset_index(drop=True)
     st.dataframe(table_df, use_container_width=True, hide_index=True)
