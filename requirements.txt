@@ -3,10 +3,14 @@ streamlit>=1.28
 
 # Data processing
 pandas>=2.0
+numpy>=1.24
 
 # Visualization
 altair>=5.5
 plotly>=5.18
+
+# Scientific computing for interpolation
+scipy>=1.11
 
 # Images (logo)
 pillow>=10.0
@@ -16,3 +20,7 @@ neon-api>=0.3
 sqlalchemy
 psycopg 
 psycopg-binary
+fastapi>=0.99
+uvicorn[standard]>=0.22
+slowapi>=0.1.4
+python-dotenv>=1.0
